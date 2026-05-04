@@ -21,9 +21,9 @@ inputs:
     required: false
     default: "utf8"
   linefeed:
-    description: "Specifies linefeed"
+    description: "Specifies linefeed (CRLF/LF)"
     required: false
-    default: "\r\n"
+    default: "CRLF"
   delimiter:
     description: "Specifies the delimiter"
     required: false

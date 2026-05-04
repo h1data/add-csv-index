@@ -10,7 +10,7 @@ async function run(): Promise<void> {
         const COLUMNS = Array.from<string>(core.getInput('columns'));
         const HEADER = core.getInput('header');
         const ENCODING = core.getInput('encoding');
-        const LINEFEED = core.getInput('linefeed');
+        const LINEFEED = getLinefeed(core.getInput('linefeed'));
         const DELIMITER = core.getInput('delimiter');
         const IS_QUOTE = Boolean(core.getInput('quoting'));
         core.info(`Creating ${OUTPUT} from ${INPUT}`);
@@ -66,6 +66,16 @@ async function run(): Promise<void> {
         core.setOutput('output', OUTPUT);
     } catch (error: any) {
         core.setFailed('Failed: ' + error.message);
+    }
+
+    function getLinefeed(linefeed: string) {
+        if (linefeed.toUpperCase() == 'CRLF' ) {
+            return '\r\n';
+        } else if (linefeed.toUpperCase() == 'LF') {
+            return '\n';
+        } else {
+            throw new Error(`Invalid linefeed value: ${linefeed}`);
+        }
     }
 }
 
