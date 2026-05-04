@@ -20763,12 +20763,14 @@ async function run() {
       append: false
     };
     fs.createReadStream(INPUT).pipe((0, import_csv_parser.default)(parserOptions)).on("headers", (head) => {
+      console.log("head: ", head);
       headers = head;
     }).on("data", (data) => {
       n++;
       console.log("data: ", data, typeof data, JSON.stringify(data));
       const row = [];
-      for (const col of data.values()) {
+      for (const key in data) {
+        const col = data[key];
         if (COLUMNS.includes(row.indexOf(col))) {
           row.push(col + String(n));
         } else {
