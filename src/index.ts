@@ -37,29 +37,29 @@ async function run(): Promise<void> {
             append: false
         };
 
+        core.info(`Creating from ${INPUT} to ${OUTPUT} ...`);
+
         fs.createReadStream(INPUT)
             .pipe(csvParser(parserOptions))
             .on('headers', (head) => {
-                console.log('head: ', head);
                 headers = head;
             })
             .on('data', (data) => {
                 n++;
-                console.log('data: ', data, typeof(data), JSON.stringify(data));
                 const row: Array<String> = [];
+                let i = 0;
                 for (const key in data) {
                     const col = data[key];
-                    if ( COLUMNS.includes(row.indexOf(col)) ) {
+                    if ( COLUMNS.includes(i) ) {
                         row.push(col + String(n));
                     } else {
                         row.push(col);
                     }
+                    i++;
                 }
-                console.log('row: ', row);
                 records.push(row);
             })
             .on('end', () => {
-                console.log('records: ', records);
                 // start writing output CSV
                 if (HEADER == 'true') writerOptions["header"] = headers;
                 const csvWriter = csvWriterCreator(writerOptions);
