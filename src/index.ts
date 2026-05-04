@@ -36,7 +36,7 @@ async function run(): Promise<void> {
               for (const col of COLUMNS) {
                 data[col] = data[col] + String(n);
               }
-              core.info('data: ' + data.join(','));
+              core.info('data: ' + data);
               records.push(data);
           });
 
