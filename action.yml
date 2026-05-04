@@ -17,7 +17,7 @@ inputs:
     required: false
     default: "true"
   encoding:
-    description: "Specifies encoding (default: utf8)"
+    description: "Specifies encoding"
     required: false
     default: "utf8"
   linefeed:
@@ -25,11 +25,11 @@ inputs:
     required: false
     default: "\r\n"
   delimiter:
-    description: "Specifies the delimiter (default=',')"
+    description: "Specifies the delimiter"
     required: false
     default: ","
   quoting:
-    description: "Whether if always quoting"
+    description: "Whether if always quoting (true/false)"
     required: false
     default: "false"
 
