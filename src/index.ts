@@ -40,19 +40,18 @@ async function run(): Promise<void> {
         fs.createReadStream(INPUT)
             .pipe(csvParser(parserOptions))
             .on('headers', (head: String[]) => {
-                console.log('headers: ' + head);
                 headers = head;
             })
             .on('data', (data: String[]) => {
-                console.log('data: ' + data);
                 n++;
-                core.info(`row ${n}`);
                 for (const col of COLUMNS) {
                     data[col] = data[col] + String(n);
                 }
+                
                 records.push(data);
             })
             .on('end', () => {
+                console.log('records: ' + records);
                 // start writing output CSV
                 if (HEADER == 'true') writerOptions["header"] = headers;
                 const csvWriter = csvWriterCreator(writerOptions);
