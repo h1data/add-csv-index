@@ -25,19 +25,26 @@ async function run(): Promise<void> {
 
         let n = 0;
         const records = new Array<Array<String>>();
-
+        let headers: String[] = [];
         let parserOptions : csvParser.Options = { separator: SEPARATOR };
         if (HEADER == 'false') parserOptions = { separator: SEPARATOR, headers: false };
 
         fs.createReadStream(INPUT)
-          .pipe(csvParser(parserOptions))
-          .on('data', (data: String[]) => {
-              n++;
-              for (const col of COLUMNS) {
-                data[col] = data[col] + String(n);
-              }
-              core.info('data: ' + data);
-              records.push(data);
+            .pipe(csvParser(parserOptions))
+            .on('headers', (head: String[]) => {
+                core.info('headers: ' + head.join(','));
+                headers = head;
+            })
+            .on('data', (data: String[]) => {
+                n++;
+                core.info(`row ${n}`);
+                for (const col of COLUMNS) {
+                    data[col] = data[col] + String(n);
+                }
+                for (const s of data) {
+                    core.info('data: ' + s);
+                }
+                records.push(data);
           });
 
         core.info('parse done.');
@@ -59,7 +66,7 @@ async function run(): Promise<void> {
             encoding: ENCODING,
             append: false
         };
-        if (HEADER == 'true') writerOptions["header"] = records[0];
+        if (HEADER == 'true') writerOptions["header"] = headers;
 
         const csvWriter = csvWriterCreator(writerOptions);
         csvWriter.writeRecords(records)
