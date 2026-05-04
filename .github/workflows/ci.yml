@@ -46,8 +46,8 @@ jobs:
               id: execute
               uses: ./
               with:
-                input: ./test/input.csv
-                output: ./test/output.csv
+                input: test/input.csv
+                output: test/output.csv
                 columns: "2"
                 header: true
                 encoding: utf8
