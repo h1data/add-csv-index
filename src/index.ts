@@ -40,11 +40,8 @@ async function run(): Promise<void> {
               records.push(data);
           });
 
-        let msg = "";
-        for (const key of records.keys()) {
-            msg += key + " ";
-        };
-        core.info(msg);
+        core.info('parse done.');
+        core.info(records[0].join(','));
         
         const writerOptions: {
             path: string;
