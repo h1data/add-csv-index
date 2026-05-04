@@ -18,7 +18,6 @@ jobs:
               with:
                 node-version-file: package.json
                 cache: npm
-            - run: npm install --save-dev esbuild
             - run: npm ci
             - run: npm run build
             - name: commit changes
