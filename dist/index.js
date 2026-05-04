@@ -63,8 +63,11 @@ function run() {
             core.info(`Creating {OUTPUT} from {INPUT}`);
             let n = 1;
             const records = new Array();
+            let parserOptions = { separator: DELIMITER };
+            if (HEADER == 'false')
+                parserOptions = { separator: DELIMITER, headers: false };
             fs.createReadStream(INPUT)
-                .pipe((0, csv_parser_1.default)())
+                .pipe((0, csv_parser_1.default)(parserOptions))
                 .on('data', (data) => {
                 for (const col of COLUMNS) {
                     const num_col = Number(col);
@@ -86,14 +89,16 @@ function run() {
                 encoding: ENCODING,
                 append: false
             };
-            if (HEADER == 'true') {
+            if (HEADER == 'true')
                 writerOptions["header"] = records[0];
-            }
             const csvWriter = csvWriterCreator(writerOptions);
             csvWriter.writeRecords(records)
                 .then(() => {
                 core.info("Done.");
             });
+            // output for GITHUB_OUTPUT
+            core.setOutput('lines', n - 1);
+            core.setOutput('output', OUTPUT);
         }
         catch (error) {
             core.setFailed(`Failed: {error}`);
