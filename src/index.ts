@@ -39,14 +39,16 @@ async function run(): Promise<void> {
 
         fs.createReadStream(INPUT)
             .pipe(csvParser(parserOptions))
-            .on('headers', (head: String[]) => {
+            .on('headers', (head) => {
+                console.log('head: ', head);
                 headers = head;
             })
-            .on('data', (data: String[]) => {
+            .on('data', (data) => {
                 n++;
                 console.log('data: ', data, typeof(data), JSON.stringify(data));
                 const row: Array<String> = [];
-                for (const col of data.values()) {
+                for (const key in data) {
+                    const col = data[key];
                     if ( COLUMNS.includes(row.indexOf(col)) ) {
                         row.push(col + String(n));
                     } else {
