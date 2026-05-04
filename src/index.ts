@@ -32,17 +32,15 @@ async function run(): Promise<void> {
         fs.createReadStream(INPUT)
             .pipe(csvParser(parserOptions))
             .on('headers', (head: String[]) => {
-                core.info('headers: ' + head.join(','));
+                console.log('headers: ' + head);
                 headers = head;
             })
             .on('data', (data: String[]) => {
+                console.log('data: ' + data);
                 n++;
                 core.info(`row ${n}`);
                 for (const col of COLUMNS) {
                     data[col] = data[col] + String(n);
-                }
-                for (const s of data) {
-                    core.info('data: ' + s);
                 }
                 records.push(data);
           });
