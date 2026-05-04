@@ -46,7 +46,7 @@ async function run(): Promise<void> {
                 n++;
                 console.log('data:', data);
                 const row: Array<String> = [];
-                for (const col of data) {
+                for (const col of data.values()) {
                     if ( COLUMNS.includes(row.indexOf(col)) ) {
                         row.push(col + String(n));
                     } else {
