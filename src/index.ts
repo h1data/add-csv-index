@@ -1,7 +1,6 @@
 import * as core from "@actions/core";
 import * as fs from 'fs';
 import csvParser from 'csv-parser';
-import { parse } from "path";
 const csvWriterCreator = require('csv-writer').createArrayCsvWriter;
 
 async function run(): Promise<void> {
@@ -66,7 +65,7 @@ async function run(): Promise<void> {
         core.setOutput('lines', n - 1);
         core.setOutput('output', OUTPUT);
     } catch (error: any) {
-        core.setFailed(`Failed: ${error.message}`);
+        core.setFailed('Failed: ' + error.message);
     }
 }
 
