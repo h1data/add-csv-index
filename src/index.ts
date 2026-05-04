@@ -14,7 +14,7 @@ async function run(): Promise<void> {
         const LINEFEED = core.getInput('linefeed');
         const DELIMITER = core.getInput('delimiter');
         const IS_QUOTE = Boolean(core.getInput('quoting'));
-        core.info(`Creating {OUTPUT} from {INPUT}`);
+        core.info(`Creating ${OUTPUT} from ${INPUT}`);
 
         let n = 1;
         const records = new Array<Array<String>>();
@@ -65,8 +65,8 @@ async function run(): Promise<void> {
         // output for GITHUB_OUTPUT
         core.setOutput('lines', n - 1);
         core.setOutput('output', OUTPUT);
-    } catch (error) {
-        core.setFailed(`Failed: ${error}`);
+    } catch (error: any) {
+        core.setFailed(`Failed: ${error.message}`);
     }
 }
 
