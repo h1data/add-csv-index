@@ -20766,7 +20766,7 @@ async function run() {
       headers = head;
     }).on("data", (data) => {
       n++;
-      console.log("data:", data);
+      console.log("data: ", data, typeof data, JSON.stringify(data));
       const row = [];
       for (const col of data.values()) {
         if (COLUMNS.includes(row.indexOf(col))) {
@@ -20775,6 +20775,7 @@ async function run() {
           row.push(col);
         }
       }
+      console.log("row: ", row);
       records.push(row);
     }).on("end", () => {
       console.log("records: ", records);
