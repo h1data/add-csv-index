@@ -44,11 +44,16 @@ async function run(): Promise<void> {
             })
             .on('data', (data: String[]) => {
                 n++;
-                for (const col of COLUMNS) {
-                    data[col] = data[col] + String(n);
+                console.log('data:', data);
+                const row: Array<String> = [];
+                for (const col of data) {
+                    if ( COLUMNS.includes(row.indexOf(col)) ) {
+                        row.push(col + String(n));
+                    } else {
+                        row.push(col);
+                    }
                 }
-                
-                records.push(data);
+                records.push(row);
             })
             .on('end', () => {
                 console.log('records: ', records);
