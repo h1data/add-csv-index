@@ -7,7 +7,7 @@ async function run(): Promise<void> {
     try {
         const INPUT = core.getInput('input');
         const OUTPUT = core.getInput('output');
-        const COLUMNS = Array.from<string>(core.getInput('columns'));
+        const COLUMNS = getColumns(core.getInput('columns'));
         const HEADER = core.getInput('header');
         const ENCODING = core.getInput('encoding');
         const LINEFEED = getLinefeed(core.getInput('linefeed'));
@@ -15,7 +15,7 @@ async function run(): Promise<void> {
         const IS_QUOTE = Boolean(core.getInput('quoting'));
         core.info(`Creating ${OUTPUT} from ${INPUT}`);
 
-        let n = 1;
+        let n = 0;
         const records = new Array<Array<String>>();
 
         let parserOptions : csvParser.Options = { separator: DELIMITER };
@@ -24,11 +24,11 @@ async function run(): Promise<void> {
         fs.createReadStream(INPUT)
           .pipe(csvParser(parserOptions))
           .on('data', (data: String[]) => {
+              n++;
               for (const col of COLUMNS) {
-                  core.info(col);
-                  const num_col = Number(col);
-                  data[num_col] = data[num_col] + String(n++);
+                data[col] = data[col] + String(n);
               }
+              core.info(data.join(','));
               records.push(data);
           });
 
@@ -63,10 +63,18 @@ async function run(): Promise<void> {
                  });
 
         // output for GITHUB_OUTPUT
-        core.setOutput('lines', n - 1);
+        core.setOutput('lines', n);
         core.setOutput('output', OUTPUT);
     } catch (error: any) {
         core.setFailed('Failed: ' + error.message);
+    }
+
+    function getColumns(columns: string) {
+        const ret = new Array<number>();
+        columns.split(',').forEach((value) => {
+            ret.push(Number(value));
+        });
+        return ret;
     }
 
     function getLinefeed(linefeed: string) {
