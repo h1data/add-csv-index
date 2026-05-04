@@ -24,8 +24,8 @@ inputs:
     description: "Specifies linefeed (CRLF/LF)"
     required: false
     default: "CRLF"
-  delimiter:
-    description: "Specifies the delimiter"
+  separator:
+    description: "Specifies the separator"
     required: false
     default: ","
   quoting:

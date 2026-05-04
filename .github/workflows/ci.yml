@@ -50,7 +50,7 @@ jobs:
                 header: true
                 encoding: utf8
                 linefeed: "CRLF"
-                delimiter: ","
+                separator: ","
                 quoting: false
             - name: Display the result
               run: |
@@ -67,7 +67,7 @@ jobs:
                   result=1
                 fi
 
-                diff test/output_expected ${{ steps.execute.outputs.output }} -q
+                diff test/output_expected.csv ${{ steps.execute.outputs.output }} -q
                 compare=$?
                 if [ $compare -eq 0 ]; then
                   echo "[OK] Created CSV is the same as the expecting"

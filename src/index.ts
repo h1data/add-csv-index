@@ -11,15 +11,23 @@ async function run(): Promise<void> {
         const HEADER = core.getInput('header');
         const ENCODING = core.getInput('encoding');
         const LINEFEED = getLinefeed(core.getInput('linefeed'));
-        const DELIMITER = core.getInput('delimiter');
+        const SEPARATOR = core.getInput('separator');
         const IS_QUOTE = Boolean(core.getInput('quoting'));
-        core.info(`Creating ${OUTPUT} from ${INPUT}`);
+        core.info(`Creating from ${INPUT} to ${OUTPUT}`);
+        core.info(`input: ${INPUT}`);
+        core.info(`output: ${OUTPUT}`);
+        core.info(`columns: ${COLUMNS.join(',')}`);
+        core.info(`header: ${HEADER}`);
+        core.info(`encoding: ${ENCODING}`);
+        core.info(`linefeed: ${LINEFEED}`);
+        core.info(`separator: ${SEPARATOR}`);
+        core.info(`quoting: ${IS_QUOTE}`);
 
         let n = 0;
         const records = new Array<Array<String>>();
 
-        let parserOptions : csvParser.Options = { separator: DELIMITER };
-        if (HEADER == 'false') parserOptions = { separator: DELIMITER, headers: false };
+        let parserOptions : csvParser.Options = { separator: SEPARATOR };
+        if (HEADER == 'false') parserOptions = { separator: SEPARATOR, headers: false };
 
         fs.createReadStream(INPUT)
           .pipe(csvParser(parserOptions))
@@ -28,7 +36,7 @@ async function run(): Promise<void> {
               for (const col of COLUMNS) {
                 data[col] = data[col] + String(n);
               }
-              core.info(data.join(','));
+              core.info('data: ' + data.join(','));
               records.push(data);
           });
 
@@ -48,7 +56,7 @@ async function run(): Promise<void> {
             append: boolean
         } = {
             path: OUTPUT,
-            fieldDelimiter: DELIMITER,
+            fieldDelimiter: SEPARATOR,
             recordDelimiter: LINEFEED,
             alwaysQuote: IS_QUOTE,
             encoding: ENCODING,
