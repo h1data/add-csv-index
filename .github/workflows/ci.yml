@@ -23,7 +23,7 @@ jobs:
             - run: npm run build
             - name: commit changes
               run: |
-                if [ { git diff --quiet } ]; then
+                if git diff --quiet; then
                     echo "no change after build"
                 else
                     git config --local user.email "github-actions[bot]@users.noreply.github.com"
