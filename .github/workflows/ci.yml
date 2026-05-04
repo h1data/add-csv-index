@@ -46,7 +46,7 @@ jobs:
               with:
                 input: ./test/input.csv
                 output: ./test/output.csv
-                columns: "3"
+                columns: "2"
                 header: true
                 encoding: utf8
                 linefeed: "CRLF"
