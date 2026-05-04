@@ -13,15 +13,6 @@ async function run(): Promise<void> {
         const LINEFEED = getLinefeed(core.getInput('linefeed'));
         const SEPARATOR = core.getInput('separator');
         const IS_QUOTE = Boolean(core.getInput('quoting'));
-        core.info(`Creating from ${INPUT} to ${OUTPUT}`);
-        core.info(`input: ${INPUT}`);
-        core.info(`output: ${OUTPUT}`);
-        core.info(`columns: ${COLUMNS.join(',')}`);
-        core.info(`header: ${HEADER}`);
-        core.info(`encoding: ${ENCODING}`);
-        core.info(`linefeed: ${LINEFEED}`);
-        core.info(`separator: ${SEPARATOR}`);
-        core.info(`quoting: ${IS_QUOTE}`);
 
         let n = 0;
         const records = new Array<Array<String>>();
@@ -29,25 +20,6 @@ async function run(): Promise<void> {
         let parserOptions : csvParser.Options = { separator: SEPARATOR };
         if (HEADER == 'false') parserOptions = { separator: SEPARATOR, headers: false };
 
-        fs.createReadStream(INPUT)
-            .pipe(csvParser(parserOptions))
-            .on('headers', (head: String[]) => {
-                console.log('headers: ' + head);
-                headers = head;
-            })
-            .on('data', (data: String[]) => {
-                console.log('data: ' + data);
-                n++;
-                core.info(`row ${n}`);
-                for (const col of COLUMNS) {
-                    data[col] = data[col] + String(n);
-                }
-                records.push(data);
-          });
-
-        core.info('parse done.');
-        core.info(records[0].join(','));
-        
         const writerOptions: {
             path: string;
             header?: Array<String>,
@@ -64,17 +36,35 @@ async function run(): Promise<void> {
             encoding: ENCODING,
             append: false
         };
-        if (HEADER == 'true') writerOptions["header"] = headers;
 
-        const csvWriter = csvWriterCreator(writerOptions);
-        csvWriter.writeRecords(records)
-                 .then(() => {
-                     core.info("Done.");
-                 });
+        fs.createReadStream(INPUT)
+            .pipe(csvParser(parserOptions))
+            .on('headers', (head: String[]) => {
+                console.log('headers: ' + head);
+                headers = head;
+            })
+            .on('data', (data: String[]) => {
+                console.log('data: ' + data);
+                n++;
+                core.info(`row ${n}`);
+                for (const col of COLUMNS) {
+                    data[col] = data[col] + String(n);
+                }
+                records.push(data);
+            })
+            .on('end', () => {
+                // start writing output CSV
+                if (HEADER == 'true') writerOptions["header"] = headers;
+                const csvWriter = csvWriterCreator(writerOptions);
+                csvWriter.writeRecords(records)
+                    .then(() => {
+                        // output for GITHUB_OUTPUT
+                        core.setOutput('lines', n);
+                        core.setOutput('output', OUTPUT);
+                        core.info("Done.");
+                    });
+            });
 
-        // output for GITHUB_OUTPUT
-        core.setOutput('lines', n);
-        core.setOutput('output', OUTPUT);
     } catch (error: any) {
         core.setFailed('Failed: ' + error.message);
     }
