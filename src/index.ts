@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as fs from 'fs';
 import csvParser from 'csv-parser';
+import { parse } from "path";
 const csvWriterCreator = require('csv-writer').createArrayCsvWriter;
 
 async function run(): Promise<void> {
@@ -17,8 +18,12 @@ async function run(): Promise<void> {
 
         let n = 1;
         const records = new Array<Array<String>>();
+
+        let parserOptions : csvParser.Options = { separator: DELIMITER };
+        if (HEADER == 'false') parserOptions = { separator: DELIMITER, headers: false };
+
         fs.createReadStream(INPUT)
-        .pipe(csvParser(  ))
+        .pipe(csvParser(parserOptions))
         .on('data', (data: String[]) => {
             for (const col of COLUMNS) {
                 const num_col = Number(col);
@@ -49,16 +54,17 @@ async function run(): Promise<void> {
             encoding: ENCODING,
             append: false
         };
-
-        if (HEADER == 'true') {
-            writerOptions["header"] = records[0];
-        }
+        if (HEADER == 'true') writerOptions["header"] = records[0];
 
         const csvWriter = csvWriterCreator(writerOptions);
         csvWriter.writeRecords(records)
                  .then(() => {
                      core.info("Done.");
                  });
+
+        // output for GITHUB_OUTPUT
+        core.setOutput('lines', n - 1);
+        core.setOutput('output', OUTPUT);
     } catch (error) {
         core.setFailed(`Failed: {error}`);
     }
