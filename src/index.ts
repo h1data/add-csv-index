@@ -22,14 +22,15 @@ async function run(): Promise<void> {
         if (HEADER == 'false') parserOptions = { separator: DELIMITER, headers: false };
 
         fs.createReadStream(INPUT)
-        .pipe(csvParser(parserOptions))
-        .on('data', (data: String[]) => {
-            for (const col of COLUMNS) {
-                const num_col = Number(col);
-                data[num_col] = data[num_col] + String(n++);
-            }
-            records.push(data);
-        });
+          .pipe(csvParser(parserOptions))
+          .on('data', (data: String[]) => {
+              for (const col of COLUMNS) {
+                  core.info(col);
+                  const num_col = Number(col);
+                  data[num_col] = data[num_col] + String(n++);
+              }
+              records.push(data);
+          });
 
         let msg = "";
         for (const key of records.keys()) {
