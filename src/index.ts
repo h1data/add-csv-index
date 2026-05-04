@@ -12,7 +12,7 @@ async function run(): Promise<void> {
         const ENCODING = core.getInput('encoding');
         const LINEFEED = getLinefeed(core.getInput('linefeed'));
         const SEPARATOR = core.getInput('separator');
-        const IS_QUOTE = Boolean(core.getInput('quoting'));
+        const IS_QUOTE = core.getInput('quoting') == 'true';
 
         let n = 0;
         const records = new Array<Array<String>>();
