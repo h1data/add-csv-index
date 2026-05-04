@@ -1,0 +1,71 @@
+name: CI
+
+on:
+    push:
+        branches: [ main ]
+        paths-ignore:
+            - 'README.md'
+
+permissions:
+  contents: write
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: actions/setup-node@v6
+              with:
+                node-version-file: package.json
+                cache: npm
+            - run: npm run build
+            - name: commit changes
+              run: |
+                if [ { git diff --quiet } ]; then
+                    echo "no change after build"
+                else
+                    git add .
+                    git commit -m "updated automatically"
+                fi
+
+    test:
+        runs-on: ubuntu-latest
+        needs: [build]
+        steps:
+            - uses: actions/checkout@v6
+            - name: Execute Action
+              id: execute
+              uses: ./
+              with:
+                input: test/input.csv
+                output: test/output.csv
+                columns: "3"
+                header: true
+                encoding: utf8
+                linefeed: "\r\n"
+                delimiter: "\""
+                quoting: false
+            - name: Display the result
+              run: |
+                echo "lines: ${{ steps.execute.outputs.lines }}"
+                echo "${{ steps.execute.outputs.output }}: "
+                cat ${{ steps.execute.outputs.output }}
+            - name: Compare outputs with expecting
+              run: |
+                result=0
+                if [[ ${{ steps.execute.outputs.lines }} =~ [0-9]+ ]]; then
+                  echo "[OK] lines is number"
+                else
+                  echo "[NG] lines is not number"
+                  result=1
+                fi
+
+                diff ${{ steps.execute.outputs.output }} -q
+                compare=$?
+                if [ $compare -eq 0 ]; then
+                  echo "[OK] Created CSV is the same as the expecting"
+                else
+                  echo "[NG] Created CSV is not the same as the expecting"
+                  result=1
+                fi
+                exit $result
