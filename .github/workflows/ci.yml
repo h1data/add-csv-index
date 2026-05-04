@@ -44,7 +44,7 @@ jobs:
                 fetch-depth: 0
             - name: Execute Action
               id: execute
-              uses: ./
+              uses: h1data/add-csv-digits@main
               with:
                 input: test/input.csv
                 output: test/output.csv
