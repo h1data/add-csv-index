@@ -20768,7 +20768,7 @@ async function run() {
       n++;
       console.log("data:", data);
       const row = [];
-      for (const col of data) {
+      for (const col of data.values()) {
         if (COLUMNS.includes(row.indexOf(col))) {
           row.push(col + String(n));
         } else {
