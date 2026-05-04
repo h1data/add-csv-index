@@ -20766,10 +20766,16 @@ async function run() {
       headers = head;
     }).on("data", (data) => {
       n++;
-      for (const col of COLUMNS) {
-        data[col] = data[col] + String(n);
+      console.log("data:", data);
+      const row = [];
+      for (const col of data) {
+        if (COLUMNS.includes(row.indexOf(col))) {
+          row.push(col + String(n));
+        } else {
+          row.push(col);
+        }
       }
-      records.push(data);
+      records.push(row);
     }).on("end", () => {
       console.log("records: ", records);
       if (HEADER == "true") writerOptions["header"] = headers;
