@@ -51,7 +51,7 @@ async function run(): Promise<void> {
                 records.push(data);
             })
             .on('end', () => {
-                console.log('records: ' + records);
+                console.log('records: ', records);
                 // start writing output CSV
                 if (HEADER == 'true') writerOptions["header"] = headers;
                 const csvWriter = csvWriterCreator(writerOptions);
