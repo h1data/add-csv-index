@@ -1,0 +1,44 @@
+name: Add digits to CSV
+description: add numbers to the certain columns in a CSV file
+author: h1data
+
+inputs:
+  input:
+    description: "Input file path"
+    required: true
+  output:
+    description: "Output file path"
+    required: true
+  columns:
+    description: "Specifies the columns by number to add digits (starts with 0, separated by comma if multiple)"
+    required: true
+  header:
+    description: "Whether the CSV has header (true/false)"
+    required: false
+    default: "true"
+  encoding:
+    description: "Specifies encoding (default: utf8)"
+    required: false
+    default: "utf8"
+  linefeed:
+    description: "Specifies linefeed"
+    required: false
+    default: "\r\n"
+  delimiter:
+    description: "Specifies the delimiter (default=',')"
+    required: false
+    default: ","
+  quoting:
+    description: "Whether if always quoting"
+    required: false
+    default: "false"
+
+outputs:
+  output:
+    description: "Output file path"
+  lines:
+    description: "The number of lines in the CSV file excluding the header"
+
+runs:
+  using: node24
+  main: "dist/index.js"

@@ -1,0 +1,67 @@
+import * as core from "@actions/core";
+import * as fs from 'fs';
+import csvParser from 'csv-parser';
+const csvWriterCreator = require('csv-writer').createArrayCsvWriter;
+
+async function run(): Promise<void> {
+    try {
+        const INPUT = core.getInput('input');
+        const OUTPUT = core.getInput('output');
+        const COLUMNS = Array.from<string>(core.getInput('columns'));
+        const HEADER = core.getInput('header');
+        const ENCODING = core.getInput('encoding');
+        const LINEFEED = core.getInput('linefeed');
+        const DELIMITER = core.getInput('delimiter');
+        const IS_QUOTE = Boolean(core.getInput('quoting'));
+        core.info(`Creating {OUTPUT} from {INPUT}`);
+
+        let n = 1;
+        const records = new Array<Array<String>>();
+        fs.createReadStream(INPUT)
+        .pipe(csvParser(  ))
+        .on('data', (data: String[]) => {
+            for (const col of COLUMNS) {
+                const num_col = Number(col);
+                data[num_col] = data[num_col] + String(n++);
+            }
+            records.push(data);
+        });
+
+        let msg = "";
+        for (const key of records.keys()) {
+            msg += key + " ";
+        };
+        core.info(msg);
+        
+        const writerOptions: {
+            path: string;
+            header?: Array<String>,
+            fieldDelimiter: string,
+            recordDelimiter: string,
+            alwaysQuote: boolean,
+            encoding: string,
+            append: boolean
+        } = {
+            path: OUTPUT,
+            fieldDelimiter: DELIMITER,
+            recordDelimiter: LINEFEED,
+            alwaysQuote: IS_QUOTE,
+            encoding: ENCODING,
+            append: false
+        };
+
+        if (HEADER == 'true') {
+            writerOptions["header"] = records[0];
+        }
+
+        const csvWriter = csvWriterCreator(writerOptions);
+        csvWriter.writeRecords(records)
+                 .then(() => {
+                     core.info("Done.");
+                 });
+    } catch (error) {
+        core.setFailed(`Failed: {error}`);
+    }
+}
+
+run();
