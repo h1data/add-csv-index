@@ -47,7 +47,7 @@ jobs:
                 columns: "3"
                 header: true
                 encoding: utf8
-                linefeed: "\r\n"
+                linefeed: "CRLF"
                 delimiter: ","
                 quoting: false
             - name: Display the result
