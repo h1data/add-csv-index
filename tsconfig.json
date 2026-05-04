@@ -5,7 +5,7 @@
     "lib": [ "es6" ],
     "outDir": "./dist",
     "rootDir": "./src",
-    "declaration": false,
+    "declaration": true,
     "strict": true,
     "noImplicitAny": false,
     "esModuleInterop": true
