@@ -48,7 +48,7 @@ jobs:
                 header: true
                 encoding: utf8
                 linefeed: "\r\n"
-                delimiter: "\""
+                delimiter: ","
                 quoting: false
             - name: Display the result
               run: |
