@@ -66,7 +66,7 @@ async function run(): Promise<void> {
         core.setOutput('lines', n - 1);
         core.setOutput('output', OUTPUT);
     } catch (error) {
-        core.setFailed(`Failed: {error}`);
+        core.setFailed(`Failed: ${error}`);
     }
 }
 
