@@ -25,8 +25,11 @@ jobs:
                 if [ { git diff --quiet } ]; then
                     echo "no change after build"
                 else
+                    git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                    git config --local user.name "github-actions[bot]"
                     git add .
                     git commit -m "updated automatically"
+                    git push origin main
                 fi
 
     test:
