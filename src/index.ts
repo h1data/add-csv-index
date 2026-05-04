@@ -44,7 +44,7 @@ async function run(): Promise<void> {
             })
             .on('data', (data: String[]) => {
                 n++;
-                console.log('data:', data);
+                console.log('data: ', data, typeof(data), JSON.stringify(data));
                 const row: Array<String> = [];
                 for (const col of data.values()) {
                     if ( COLUMNS.includes(row.indexOf(col)) ) {
@@ -53,6 +53,7 @@ async function run(): Promise<void> {
                         row.push(col);
                     }
                 }
+                console.log('row: ', row);
                 records.push(row);
             })
             .on('end', () => {
