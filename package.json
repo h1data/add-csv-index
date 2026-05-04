@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --target=node24 --minify --outfile=dist/index.js"
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.js"
   },
   "dependencies": {
     "@actions/core": "^1.1.0",
