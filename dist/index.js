@@ -28072,14 +28072,12 @@ async function run() {
       quote: ESCAPE
     };
     const writerOptions = {
-      path: OUTPUT,
-      header: HEADER ? headers : void 0,
-      fieldDelimiter: SEPARATOR,
-      recordDelimiter: LINEFEED,
-      alwaysQuote: IS_QUOTE,
-      encoding: ENCODING,
-      escape: ESCAPE,
-      append: false
+      header: HEADER,
+      delimiter: SEPARATOR,
+      fields: headers.join(","),
+      crlf: LINEFEED == "\r\n",
+      quote: ESCAPE,
+      quoteMode: IS_QUOTE
     };
     core.info(`Creating from ${INPUT} to ${OUTPUT} ...`);
     fs.createReadStream(INPUT).pipe((0, import_csv_parser.default)(parserOptions)).on("headers", (head) => {

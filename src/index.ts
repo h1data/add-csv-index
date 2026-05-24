@@ -26,14 +26,12 @@ async function run(): Promise<void> {
         };
 
         const writerOptions = {
-            path: OUTPUT,
-            header: HEADER ? headers : undefined, 
-            fieldDelimiter: SEPARATOR,
-            recordDelimiter: LINEFEED,
-            alwaysQuote: IS_QUOTE,
-            encoding: ENCODING,
-            escape: ESCAPE,
-            append: false
+            header: HEADER, 
+            delimiter: SEPARATOR,
+            fields: headers.join(','),
+            crlf: LINEFEED == '\r\n',
+            quote: ESCAPE,
+            quoteMode: IS_QUOTE
         };
 
         core.info(`Creating from ${INPUT} to ${OUTPUT} ...`);
