@@ -22,8 +22,7 @@ async function run(): Promise<void> {
             separator: SEPARATOR,
             headers: HEADER ? undefined : false,
             escape: ESCAPE,
-            quote: ESCAPE,
-            newline: LINEFEED,
+            quote: ESCAPE
         };
 
         const writerOptions = {
