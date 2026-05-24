@@ -28069,8 +28069,7 @@ async function run() {
       separator: SEPARATOR,
       headers: HEADER ? void 0 : false,
       escape: ESCAPE,
-      quote: ESCAPE,
-      newline: LINEFEED
+      quote: ESCAPE
     };
     const writerOptions = {
       path: OUTPUT,
