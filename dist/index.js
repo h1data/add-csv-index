@@ -28101,6 +28101,8 @@ async function run() {
       records.push(row);
     }).on("end", () => {
       (0, import_csvwriter.default)(records, writerOptions, (error2, csv) => {
+        console.info("records", records);
+        console.info("csv", csv);
         if (error2) throw error2;
         fs.writeFileSync(OUTPUT, csv, ENCODING);
         core.setOutput("lines", n);
