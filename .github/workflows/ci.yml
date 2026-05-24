@@ -6,6 +6,7 @@ on:
         paths-ignore:
             - 'README.md'
             - 'dist'
+    workflow_dispatch:
 
 permissions:
   contents: write
@@ -53,7 +54,7 @@ jobs:
                 encoding: utf8
                 linefeed: "CRLF"
                 separator: ","
-                quoting: false
+                quote-always: false
             - name: Display the result
               run: |
                 echo "lines: ${{ steps.execute.outputs.lines }}"
