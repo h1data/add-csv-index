@@ -1,39 +1,39 @@
-import * as core from "@actions/core";
+import * as core from '@actions/core';
 import * as fs from 'fs';
 import csvParser from 'csv-parser';
-const csvWriterCreator = require('csv-writer').createArrayCsvWriter;
+import csvWriter from 'csvwriter';
 
 async function run(): Promise<void> {
     try {
         const INPUT = core.getInput('input');
         const OUTPUT = core.getInput('output');
         const COLUMNS = getColumns(core.getInput('columns'));
-        const HEADER = core.getInput('header');
+        const HEADER = core.getInput('header') == 'true';
         const ENCODING = core.getInput('encoding');
         const LINEFEED = getLinefeed(core.getInput('linefeed'));
         const SEPARATOR = core.getInput('separator');
-        const IS_QUOTE = core.getInput('quoting') == 'true';
+        const ESCAPE = core.getInput('escape');
+        const IS_QUOTE = core.getInput('quote-always') == 'true';
 
         let n = 0;
-        const records = new Array<Array<String>>();
-        let headers: String[] = [];
-        let parserOptions : csvParser.Options = { separator: SEPARATOR };
-        if (HEADER == 'false') parserOptions = { separator: SEPARATOR, headers: false };
+        const records = new Array<Array<string>>();
+        let headers: string[] = [];
+        let parserOptions : csvParser.Options = {
+            separator: SEPARATOR,
+            headers: HEADER ? undefined : false,
+            escape: ESCAPE,
+            quote: ESCAPE,
+            newline: LINEFEED,
+        };
 
-        const writerOptions: {
-            path: string;
-            header?: Array<String>,
-            fieldDelimiter: string,
-            recordDelimiter: string,
-            alwaysQuote: boolean,
-            encoding: string,
-            append: boolean
-        } = {
+        const writerOptions = {
             path: OUTPUT,
+            header: HEADER ? headers : undefined, 
             fieldDelimiter: SEPARATOR,
             recordDelimiter: LINEFEED,
             alwaysQuote: IS_QUOTE,
             encoding: ENCODING,
+            escape: ESCAPE,
             append: false
         };
 
@@ -46,7 +46,7 @@ async function run(): Promise<void> {
             })
             .on('data', (data) => {
                 n++;
-                const row: Array<String> = [];
+                const row: Array<string> = [];
                 let i = 0;
                 for (const key in data) {
                     const col = data[key];
@@ -61,15 +61,10 @@ async function run(): Promise<void> {
             })
             .on('end', () => {
                 // start writing output CSV
-                if (HEADER == 'true') writerOptions["header"] = headers;
-                const csvWriter = csvWriterCreator(writerOptions);
-                csvWriter.writeRecords(records)
-                    .then(() => {
-                        // output for GITHUB_OUTPUT
-                        core.setOutput('lines', n);
-                        core.setOutput('output', OUTPUT);
-                        core.info("Done.");
-                    });
+                csvWriter(records, writerOptions, (error, csv) => {
+                    if (error) throw error;
+                    fs.writeFileSync(OUTPUT, csv, ENCODING as fs.WriteFileOptions);
+                });
             });
 
     } catch (error: any) {
@@ -81,6 +76,10 @@ async function run(): Promise<void> {
         columns.split(',').forEach((value) => {
             ret.push(Number(value));
         });
+        if (columns.length == 0) {
+            core.error('columns are not specified.');
+            process.exit(1);
+        }
         return ret;
     }
 
@@ -90,7 +89,8 @@ async function run(): Promise<void> {
         } else if (linefeed.toUpperCase() == 'LF') {
             return '\n';
         } else {
-            throw new Error(`Invalid linefeed value: ${linefeed}`);
+            core.error(`Invalid linefeed value: ${linefeed}`);
+            process.exit(1);
         }
     }
 }
