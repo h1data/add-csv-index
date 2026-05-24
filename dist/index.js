@@ -28063,7 +28063,7 @@ async function run() {
     const ESCAPE = core.getInput("escape");
     const IS_QUOTE = core.getInput("quote-always") == "true";
     let n = 0;
-    const records = new Array();
+    const records = [];
     let headers = [];
     let parserOptions = {
       separator: SEPARATOR,

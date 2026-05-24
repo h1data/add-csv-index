@@ -16,7 +16,7 @@ async function run(): Promise<void> {
         const IS_QUOTE = core.getInput('quote-always') == 'true';
 
         let n = 0;
-        const records = new Array<Object>();
+        const records : Array<Object> = [];
         let headers: string[] = [];
         let parserOptions : csvParser.Options = {
             separator: SEPARATOR,
