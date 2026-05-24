@@ -63,6 +63,8 @@ async function run(): Promise<void> {
             .on('end', () => {
                 // start writing output CSV
                 csvWriter(records, writerOptions, (error, csv) => {
+                    console.info('records', records);
+                    console.info('csv', csv);
                     if (error) throw error;
                     fs.writeFileSync(OUTPUT, csv, ENCODING as fs.WriteFileOptions);
                     // output for GITHUB_OUTPUT
