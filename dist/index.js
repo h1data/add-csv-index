@@ -28087,14 +28087,14 @@ async function run() {
       headers = head;
     }).on("data", (data) => {
       n++;
-      const row = [];
+      const row = {};
       let i = 0;
       for (const key in data) {
         const col = data[key];
         if (COLUMNS.includes(i)) {
-          row.push(col + String(n));
+          row[key] = col + String(n);
         } else {
-          row.push(col);
+          row[key] = col;
         }
         i++;
       }

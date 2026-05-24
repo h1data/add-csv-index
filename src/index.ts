@@ -16,7 +16,7 @@ async function run(): Promise<void> {
         const IS_QUOTE = core.getInput('quote-always') == 'true';
 
         let n = 0;
-        const records = new Array<Array<string>>();
+        const records = new Array<Object>();
         let headers: string[] = [];
         let parserOptions : csvParser.Options = {
             separator: SEPARATOR,
@@ -45,15 +45,16 @@ async function run(): Promise<void> {
                 headers = head;
             })
             .on('data', (data) => {
+                // TODO use value mapping
                 n++;
-                const row: Array<string> = [];
+                const row: Object = {};
                 let i = 0;
                 for (const key in data) {
                     const col = data[key];
                     if ( COLUMNS.includes(i) ) {
-                        row.push(col + String(n));
+                        row[key] = col + String(n);
                     } else {
-                        row.push(col);
+                        row[key] = col;
                     }
                     i++;
                 }
