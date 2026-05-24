@@ -19705,7 +19705,7 @@ var require_core = __commonJS({
 Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     }
     exports2.getBooleanInput = getBooleanInput;
-    function setOutput(name, value) {
+    function setOutput2(name, value) {
       const filePath = process.env["GITHUB_OUTPUT"] || "";
       if (filePath) {
         return (0, file_command_1.issueFileCommand)("OUTPUT", (0, file_command_1.prepareKeyValueMessage)(name, value));
@@ -19713,7 +19713,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       process.stdout.write(os.EOL);
       (0, command_1.issueCommand)("set-output", { name }, (0, utils_1.toCommandValue)(value));
     }
-    exports2.setOutput = setOutput;
+    exports2.setOutput = setOutput2;
     function setCommandEcho(enabled) {
       (0, command_1.issue)("echo", enabled ? "on" : "off");
     }
@@ -28103,6 +28103,9 @@ async function run() {
       (0, import_csvwriter.default)(records, writerOptions, (error2, csv) => {
         if (error2) throw error2;
         fs.writeFileSync(OUTPUT, csv, ENCODING);
+        core.setOutput("lines", n);
+        core.setOutput("output", OUTPUT);
+        core.info("Done.");
       });
     });
   } catch (error2) {

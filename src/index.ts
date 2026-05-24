@@ -64,6 +64,10 @@ async function run(): Promise<void> {
                 csvWriter(records, writerOptions, (error, csv) => {
                     if (error) throw error;
                     fs.writeFileSync(OUTPUT, csv, ENCODING as fs.WriteFileOptions);
+                    // output for GITHUB_OUTPUT
+                    core.setOutput('lines', n);
+                    core.setOutput('output', OUTPUT);
+                    core.info("Done.");
                 });
             });
 
