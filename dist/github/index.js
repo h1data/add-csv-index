@@ -28094,49 +28094,63 @@ function getLinefeed(linefeed) {
 async function run(adapter) {
   try {
     const options = getOptions(adapter);
-    let n = 0;
-    const records = [];
-    let headers = [];
+    const INPUT_REGEXP = RegExp(options.INPUT.replace(".", "\\.").replace("*", "(?<langCode>.+)"));
     let parserOptions = {
       separator: options.SEPARATOR,
       headers: options.HEADER ? void 0 : false,
       escape: options.ESCAPE,
       quote: options.ESCAPE
     };
-    const writerOptions = {
-      header: options.HEADER,
-      delimiter: options.SEPARATOR,
-      fields: headers.join(","),
-      crlf: options.LINEFEED == "\r\n",
-      quote: options.ESCAPE,
-      quoteMode: options.IS_QUOTE
-    };
-    adapter.info(`Creating from ${options.INPUT} to ${options.OUTPUT} ...`);
-    import_fs.default.createReadStream(options.INPUT).pipe((0, import_csv_parser.default)(parserOptions)).on("headers", (head) => {
-      headers = head;
-    }).on("data", (data) => {
-      n++;
-      const row = {};
-      let i = 0;
-      for (const key in data) {
-        const col = data[key];
-        if (options.COLUMNS.includes(i)) {
-          row[key] = col + String(n);
-        } else {
-          row[key] = col;
+    for (const input of import_fs.default.globSync(options.INPUT)) {
+      let n = 0;
+      const records = [];
+      let headers = [];
+      let output = options.OUTPUT;
+      if (output.includes("*")) {
+        const langMatch = input.match(INPUT_REGEXP);
+        if (langMatch?.groups == void 0) {
+          console.warn(`language code not found, skipped ${input}`);
+          continue;
         }
-        i++;
+        output = options.OUTPUT.replace("*", langMatch.groups.langCode);
       }
-      records.push(row);
-    }).on("end", () => {
-      (0, import_csvwriter.default)(records, writerOptions, (error, csv) => {
-        if (error) throw error;
-        import_fs.default.writeFileSync(options.OUTPUT, csv, options.ENCODING);
-        adapter.setOutput?.("lines", n);
-        adapter.setOutput?.("output", options.OUTPUT);
-        adapter.info("Done.");
+      adapter.info(`Creating from ${options.INPUT} to ${options.OUTPUT} ...`);
+      let sourceKey = "";
+      if (!options.HEADER && options.SOURCE >= 0) sourceKey = options.SOURCE.toString();
+      import_fs.default.createReadStream(options.INPUT).pipe((0, import_csv_parser.default)(parserOptions)).on("headers", (head) => {
+        headers = head;
+      }).on("data", (data) => {
+        n++;
+        const row = {};
+        let i = 0;
+        for (const key in data) {
+          const col = data[key];
+          if (options.COLUMNS.includes(i)) {
+            row[key] = col + String(n);
+          } else {
+            row[key] = col;
+          }
+          i++;
+        }
+        records.push(row);
+      }).on("end", () => {
+        const writerOptions = {
+          header: options.HEADER,
+          delimiter: options.SEPARATOR,
+          fields: headers.join(","),
+          crlf: options.LINEFEED == "\r\n",
+          quote: options.ESCAPE,
+          quoteMode: options.IS_QUOTE
+        };
+        (0, import_csvwriter.default)(records, writerOptions, (error, csv) => {
+          if (error) throw error;
+          import_fs.default.writeFileSync(options.OUTPUT, csv, options.ENCODING);
+          adapter.setOutput?.("lines", n);
+          adapter.setOutput?.("output", options.OUTPUT);
+          adapter.info("Done.");
+        });
       });
-    });
+    }
   } catch (error) {
     adapter.error("Failed: " + error.message);
   }
