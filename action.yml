@@ -12,6 +12,8 @@ inputs:
   columns:
     description: Specifies the columns by number to add line numbers (starts with 0, separated by comma if multiple)
     required: true
+  source: 
+    description: Specifies the column number of the source text for filling if target columns are empty (starts with 0)
   header:
     description: Whether the CSV has header (true/false)
     required: false
@@ -44,5 +46,5 @@ outputs:
     description: The number of lines in the CSV file excluding the header
 
 runs:
-  using: node24
+  using: node24-slim
   main: "dist/github/index.js"
