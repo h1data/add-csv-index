@@ -28153,6 +28153,7 @@ async function run(adapter) {
     }
   } catch (error) {
     adapter.error("Failed: " + error.message);
+    process.exit(-1);
   }
 }
 
@@ -28162,10 +28163,18 @@ var self2 = {
   getInput: (key, defaultValue) => {
     return import_core.default.getInput(key) ?? defaultValue;
   },
-  info: import_core.default.info,
-  warn: import_core.default.warning,
-  error: import_core.default.setFailed,
-  setOutput: import_core.default.setOutput
+  info: (message) => {
+    import_core.default.info(message);
+  },
+  warn: (message) => {
+    import_core.default.warning(message);
+  },
+  error: (message) => {
+    import_core.default.setFailed(message);
+  },
+  setOutput: (key, output) => {
+    import_core.default.setOutput(key, output);
+  }
 };
 var githubAdapter_default = self2;
 

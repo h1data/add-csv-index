@@ -9,9 +9,9 @@ const self : CIAdapter = {
         }
         return value ?? defaultValue as string;
     },
-    info: console.log,
-    warn: console.warn,
-    error: console.error
+    info: (message) => { console.log(message); },
+    warn: (message) => { console.warn(message); },
+    error: (message) => { console.error(message); }
 
 };
 
