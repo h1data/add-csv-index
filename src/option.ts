@@ -1,15 +1,32 @@
-import * as core from '@actions/core';
+import Adapter from './ci/CIAdapter';
 
-export const INPUT = getInput('INPUT');
-export const OUTPUT = getInput('OUTPUT');
-export const COLUMNS = getColumns(getInput('COLUMNS'));
-export const SOURCE = Number.parseInt(getInput('SOURCE', '-1'))
-export const HEADER = getInput('HEADER', 'true') == 'true';
-export const ENCODING = getInput('ENCODING', 'utf8');
-export const LINEFEED = getLinefeed(getInput('LINEFEED', 'CRLF'));
-export const SEPARATOR = getInput('SEPARATOR', ',');
-export const ESCAPE = getInput('ESCAPE', '"');
-export const IS_QUOTE = getInput('QUOTE_ALWAYS', 'false') == 'true';
+export interface Options {
+    INPUT: string,
+    OUTPUT: string,
+    COLUMNS: Array<number>,
+    SOURCE: number,
+    HEADER: boolean,
+    ENCODING: string,
+    LINEFEED: string,
+    SEPARATOR: string,
+    ESCAPE: string,
+    IS_QUOTE: boolean
+}
+
+export function getOptions(adapter: Adapter) : Options {
+    return {
+        INPUT: adapter.getInput('INPUT', undefined),
+        OUTPUT: adapter.getInput('OUTPUT', undefined),
+        COLUMNS: getColumns(adapter.getInput('COLUMNS', undefined)),
+        SOURCE: Number.parseInt(adapter.getInput('SOURCE', '-1')),
+        HEADER: adapter.getInput('HEADER', 'true') == 'true',
+        ENCODING: adapter.getInput('ENCODING', 'utf8'),
+        LINEFEED: getLinefeed(adapter.getInput('LINEFEED', 'CRLF')),
+        SEPARATOR: adapter.getInput('SEPARATOR', ','),
+        ESCAPE: adapter.getInput('ESCAPE', '"'),
+        IS_QUOTE: adapter.getInput('QUOTE_ALWAYS', 'false') == 'true'
+    }
+}
 
 function getColumns(columns: string) : Array<number> {
     const ret = new Array<number>();
@@ -21,7 +38,8 @@ function getColumns(columns: string) : Array<number> {
     }
     return ret;
 }
-function getLinefeed(linefeed: string) {
+
+function getLinefeed(linefeed: string) : string {
     if (linefeed.toUpperCase() == 'CRLF' ) {
         return '\r\n';
     } else if (linefeed.toUpperCase() == 'LF') {
@@ -29,8 +47,4 @@ function getLinefeed(linefeed: string) {
     } else {
         throw new Error(`Invalid linefeed value: ${linefeed}`);
     }
-}
-
-function getInput(key: string, defaultValue: string|undefined = undefined) : string {
-    return core.getInput(key);
 }
