@@ -8375,22 +8375,22 @@ async function run(adapter) {
 }
 
 // src/ci/githubAdapter.ts
-var import_core = __toESM(require("@actions/core"));
+var core = __toESM(require("@actions/core"));
 var self2 = {
   getInput: (key, defaultValue) => {
-    return import_core.default.getInput(key) ?? defaultValue;
+    return core.getInput(key) ?? defaultValue;
   },
   info: (message) => {
-    import_core.default.info(message);
+    core.info(message);
   },
   warn: (message) => {
-    import_core.default.warning(message);
+    core.warning(message);
   },
   error: (message) => {
-    import_core.default.setFailed(message);
+    core.setFailed(message);
   },
   setOutput: (key, output) => {
-    import_core.default.setOutput(key, output);
+    core.setOutput(key, output);
   }
 };
 var githubAdapter_default = self2;
