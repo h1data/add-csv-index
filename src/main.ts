@@ -80,5 +80,6 @@ export async function run(adapter: Adapter): Promise<void> {
         }
     } catch (error: any) {
         adapter.error('Failed: ' + error.message);
+        process.exit(-1);
     }
 }
