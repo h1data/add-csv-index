@@ -23,7 +23,8 @@ jobs:
                 node-version-file: package.json
                 cache: npm
             - run: npm ci
-            - run: npm run build
+            - run: npm run build:github
+            - run: npm run build:gitlab
             - name: commit changes
               run: |
                 if git diff --quiet; then
