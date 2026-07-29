@@ -62,8 +62,8 @@ test-1:
       https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js \
       -o temp/index.js
     - node temp/index.js
-    - if [ ! -f test/output.csv ]; then echo "Produced CSV not found" && exit 2; fi
-    - diff -u test/output_expected.csv test/output.csv || (echo "CSV mismatch" && exit 1)
+    - if [ ! -f test/1_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
+    - diff -u test/1_output_expected.csv test/1_output.csv || (echo "CSV mismatch" && exit 1)
 
 test-2:
   stage: test
@@ -76,11 +76,9 @@ test-2:
           - test/**
           - templates/add-csv-index.yml
           - .gitlab-ci.yml
-  artifacts:
-    paths: [ test/out*.csv ]
   variables:
-    INPUT_INPUT: test/in*.csv
-    INPUT_OUTPUT: test/out*.csv
+    INPUT_INPUT: test/2_in*.csv
+    INPUT_OUTPUT: test/2_out*.csv
     INPUT_COLUMNS: "2"
     INPUT_SOURCE: "1"
     INPUT_HEADER: true
@@ -100,5 +98,5 @@ test-2:
       https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js \
       -o temp/index.js
     - node temp/index.js
-    - if [ ! -f test/output.csv ]; then echo "Produced CSV not found" && exit 2; fi
-    - diff -u test/output_expected.csv test/output.csv || (echo "CSV mismatch" && exit 1)
+    - if [ ! -f test/2_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
+    - diff -u test/2_output_expected.csv test/2_output.csv || (echo "CSV mismatch" && exit 1)
