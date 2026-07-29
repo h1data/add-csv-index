@@ -32,12 +32,12 @@ export async function run(adapter: Adapter): Promise<void> {
                 }
                 output = options.OUTPUT.replace('*', langMatch.groups.langCode);
             }
-            adapter.info(`Creating from ${options.INPUT} to ${options.OUTPUT} ...`);
+            adapter.info(`Creating from ${input} to ${output} ...`);
 
             let sourceKey = '';
             if (!options.HEADER && options.SOURCE >= 0) sourceKey = options.SOURCE.toString();
 
-            fs.createReadStream(options.INPUT)
+            fs.createReadStream(input)
                 .pipe(csvParser(parserOptions))
                 .on('headers', (head) => {
                     headers = head;
@@ -69,10 +69,10 @@ export async function run(adapter: Adapter): Promise<void> {
                     };
                     csvWriter(records, writerOptions, (error, csv) => {
                         if (error) throw error;
-                        fs.writeFileSync(options.OUTPUT, csv, options.ENCODING as fs.WriteFileOptions);
+                        fs.writeFileSync(output, csv, options.ENCODING as fs.WriteFileOptions);
                         // output stats
                         adapter.setOutput?.('lines', n);
-                        adapter.setOutput?.('output', options.OUTPUT);
+                        adapter.setOutput?.('output', output);
                         adapter.info("Done.");
                     });
                 });
