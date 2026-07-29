@@ -32,7 +32,40 @@ build:
     paths:
       - dist/**
 
-make-csv-indexed:
+test-1:
+  stage: test
+  image: node:24-alpine
+  rules:
+    - changes:
+        paths:
+          - dist/**
+          - src/**
+          - test/**
+          - templates/add-csv-index.yml
+          - .gitlab-ci.yml
+  artifacts:
+    paths: [ test/out*.csv ]
+  variables:
+    INPUT_INPUT: test/1_in*.csv
+    INPUT_OUTPUT: test/1_out*.csv
+    INPUT_COLUMNS: "2"
+    INPUT_SOURCE: "1"
+  before_script:
+    - apk add --no-cache curl diffutils
+  script:
+    - mkdir -p temp
+    - |
+      curl -L \
+      -H "Accept: application/vnd.github.raw" \
+      -H "Authorization: Bearer $GITHUB_TOKEN" \
+      -H "X-GitHub-Api-Version: 2026-03-10" \
+      https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js \
+      -o temp/index.js
+    - node temp/index.js
+    - if [ ! -f test/output.csv ]; then echo "Produced CSV not found" && exit 2; fi
+    - diff -u test/output_expected.csv test/output.csv || (echo "CSV mismatch" && exit 1)
+
+test-2:
   stage: test
   image: node:24-alpine
   rules:
@@ -56,7 +89,7 @@ make-csv-indexed:
     INPUT_SEPARATOR: ","
     INPUT_QUOTE_ALWAYS: false
   before_script:
-    - apk add --no-cache curl
+    - apk add --no-cache curl diffutils
   script:
     - mkdir -p temp
     - |
@@ -67,24 +100,5 @@ make-csv-indexed:
       https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js \
       -o temp/index.js
     - node temp/index.js
-
-validate:
-  stage: test
-  image: alpine:latest
-  needs:
-    - job: make-csv-indexed
-      optional: true
-      artifacts: true
-  rules:
-    - changes:
-        paths:
-          - dist/**
-          - src/**
-          - test/**
-          - templates/add-csv-index.yml
-          - .gitlab-ci.yml
-  script:
-    - apk add --no-cache diffutils
-    - echo "Comparing expected vs produced CSVs"
     - if [ ! -f test/output.csv ]; then echo "Produced CSV not found" && exit 2; fi
     - diff -u test/output_expected.csv test/output.csv || (echo "CSV mismatch" && exit 1)
