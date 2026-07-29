@@ -1,0 +1,4 @@
+﻿"Hello, $NAME",,,GREETING,comment test
+good bye!,さようなら！,,GREETING,
+Start,開始,,MENU,
+Quit,,,MENU,
