@@ -10,7 +10,7 @@
     "@actions/core": "^3.0.1",
     "csv-parser": "^3.2.0",
     "csvwriter": "1.2.0",
-    "iconv": "^3.0.1"
+    "iconv-lite": "^0.7.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
@@ -19,5 +19,8 @@
   },
   "engines": {
     "node": ">=24.15"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
   }
 }

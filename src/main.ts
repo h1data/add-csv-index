@@ -1,9 +1,9 @@
 import fs from 'fs';
 import csvParser from 'csv-parser';
 import csvWriter from 'csvwriter';
+import iconv from 'iconv-lite';
 import Adapter from './ci/CIAdapter';
 import * as option from './option';
-import iconv from 'iconv';
 
 export async function run(adapter: Adapter): Promise<void> {
     try {
