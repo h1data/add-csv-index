@@ -1,19 +1,20 @@
 {
   "name": "append-csv-index",
   "version": "1.0.0",
-  "main": "dist/main.js",
+  "main": "dist/gitlab/index.js",
   "scripts": {
     "build:github": "esbuild src/main_github.ts --bundle --minify --platform=node --target=node24 --outfile=dist/github/index.js",
     "build:gitlab": "esbuild src/main_gitlab.ts --bundle --minify --platform=node --target=node24 --outfile=dist/gitlab/index.js"
   },
   "dependencies": {
-    "@actions/core": "^1.1.0",
+    "@actions/core": "^3.0.1",
     "csv-parser": "^3.2.0",
-    "csvwriter": "^1.3.0"
+    "csvwriter": "1.2.0",
+    "iconv": "^3.0.1"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.1",
     "typescript": "^6.0.0"
   },
   "engines": {

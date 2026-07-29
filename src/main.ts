@@ -3,6 +3,7 @@ import csvParser from 'csv-parser';
 import csvWriter from 'csvwriter';
 import Adapter from './ci/CIAdapter';
 import * as option from './option';
+import iconv from 'iconv';
 
 export async function run(adapter: Adapter): Promise<void> {
     try {
@@ -38,6 +39,7 @@ export async function run(adapter: Adapter): Promise<void> {
             if (!options.HEADER && options.SOURCE >= 0) sourceKey = options.SOURCE.toString();
 
             fs.createReadStream(input)
+                .pipe(iconv.decodeStream(options.ENCODING))
                 .pipe(csvParser(parserOptions))
                 .on('headers', (head) => {
                     headers = head;
@@ -71,7 +73,7 @@ export async function run(adapter: Adapter): Promise<void> {
                     };
                     csvWriter(records, writerOptions, (error, csv) => {
                         if (error) throw error;
-                        fs.writeFileSync(output, csv, options.ENCODING as fs.WriteFileOptions);
+                        fs.writeFileSync(output, options.UTF_BOM ? '\uFEFF' + csv : csv, options.ENCODING as fs.WriteFileOptions);
                         // output stats
                         adapter.setOutput?.('lines', n);
                         adapter.setOutput?.('output', output);
