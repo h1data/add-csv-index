@@ -43,7 +43,6 @@ export async function run(adapter: Adapter): Promise<void> {
                     headers = head;
                 })
                 .on('data', (data) => {
-                    // TODO use value mapping
                     n++;
                     const row: Object = {};
                     let i = 0;
