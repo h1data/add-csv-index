@@ -83,6 +83,7 @@ test-2:
     INPUT_SOURCE: "1"
     INPUT_HEADER: true
     INPUT_ENCODING: utf8
+    INPUT_UTF_BOM: true
     INPUT_LINEFEED: CRLF
     INPUT_SEPARATOR: ","
     INPUT_QUOTE_ALWAYS: false
