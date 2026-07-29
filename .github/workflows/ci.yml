@@ -92,6 +92,7 @@ jobs:
                 columns: "1,2"
                 source: "0"
                 header: false
+                utf_bom: true
                 linefeed: LF
             - name: Display the result
               run: |
