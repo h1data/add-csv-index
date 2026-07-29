@@ -41,7 +41,7 @@ export async function run(adapter: Adapter): Promise<void> {
                 .pipe(csvParser(parserOptions))
                 .on('headers', (head) => {
                     headers = head;
-                    if (options.SOURCE >=0 && options.SOURCE) sourceKey = head[options.SOURCE];
+                    if (options.SOURCE >=0) sourceKey = head[options.SOURCE];
                 })
                 .on('data', (data) => {
                     n++;
