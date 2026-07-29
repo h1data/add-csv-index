@@ -1,10 +1,10 @@
 {
   "name": "append-csv-index",
   "version": "1.0.0",
-  "main": "dist/github/index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "build:github": "esbuild src/main_github.ts --bundle --minify --platform=node --target=node24 --outfile=dist/github/index.js",
-    "build:gitlab": "esbuild src/main_github.ts --bundle --minify --platform=node --target=node24 --external:@actions/core --outfile=dist/gitlab/index.js"
+    "build:github": "esbuild src/main_github.ts --bundle --minify --platform=node --target=node24 --external:./ci/gitlabAdapter --outfile=dist/github/index.js",
+    "build:gitlab": "esbuild src/main_github.ts --bundle --minify --platform=node --target=node24 --external:@actions/core --external:./ci/githubAdapter --outfile=dist/gitlab/index.js"
   },
   "dependencies": {
     "@actions/core": "^1.1.0",
