@@ -57,13 +57,14 @@ See [Parameters](#parameters) section for details of each parameter.
 - `output`: Output file path (required)<br>
   ex. `foo/localization_number.csv`
 - `columns`: Specifies the columns by number to add line numbers (starts with 0, separated by comma if multiple, required)<br>
-  ex. `2` or `2,3,4` if the file has columns for multiple languages
-- `header`: Whether the CSV has header (true/false)
+  ex. `2`, or `2,3,4` if the file has columns for multiple languages
+- `header`: Whether the CSV has header (true/false, default: true)
 - `encoding`: Specifies encoding (default: `utf8`)
+- `utf_bom`: Whether the CSV has BOM (default: false)
 - `linefeed`: Specifies linefeed by `CRLF` or `LF` (default: `CRLF`)
 - `separator`: Specifies the separator (default: `,`)
 - `escape`: Specifies escape character for separators (default: `\"`)
-- `quote-always`: Whether if always quote-always (true/false)
+- `quote-always`: Whether if always quote-always (true/false, default: false)
 
 ### Outputs
 - output: the path of the created CSV file
