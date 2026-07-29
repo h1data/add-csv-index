@@ -66,7 +66,7 @@ jobs:
                   result=1
                 fi
 
-                diff test/output_expected.csv ${{ steps.execute.outputs.output }} -q
+                diff test/1_output_expected.csv ${{ steps.execute.outputs.output }} -q
                 compare=$?
                 if [ $compare -eq 0 ]; then
                   echo "[OK] Created CSV is the same as the expecting"
@@ -108,7 +108,7 @@ jobs:
                   result=1
                 fi
 
-                diff test/2_output_expected.csv 2_output.csv -q
+                diff test/2_output_expected.csv test/2_output.csv -q
                 compare=$?
                 if [ $compare -eq 0 ]; then
                   echo "[OK] Created CSV is the same as the expecting"
