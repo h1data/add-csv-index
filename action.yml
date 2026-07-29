@@ -22,6 +22,10 @@ inputs:
     description: Specifies encoding
     required: false
     default: "utf8"
+  utf_bom:
+    description: Whether the CSV has BOM
+    required: false
+    default: "false"
   linefeed:
     description: Specifies linefeed (CRLF/LF)
     required: false
