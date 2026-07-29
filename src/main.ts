@@ -41,14 +41,16 @@ export async function run(adapter: Adapter): Promise<void> {
                 .pipe(csvParser(parserOptions))
                 .on('headers', (head) => {
                     headers = head;
+                    if (options.SOURCE >=0 && options.SOURCE) sourceKey = head[options.SOURCE];
                 })
                 .on('data', (data) => {
                     n++;
                     const row: Object = {};
                     let i = 0;
                     for (const key in data) {
-                        const col = data[key];
+                        let col = data[key];
                         if ( options.COLUMNS.includes(i) ) {
+                            if (col == '' && sourceKey != '') col = data[sourceKey];
                             row[key] = col + String(n);
                         } else {
                             row[key] = col;
