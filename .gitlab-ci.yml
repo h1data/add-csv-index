@@ -1,38 +1,7 @@
 # CI Script for GitLab CI
 
 stages:
-  - build
   - test
-
-build:
-  stage: build
-  image: node:24-alpine
-  rules:
-    - changes:
-        paths:
-          - 'dist/**'
-          - 'src/**'
-          - templates/add-csv-index.yml
-          - .gitlab-ci.yml
-  before_script:
-    - apk add --no-cache git
-    - git config --global user.name "$GITLAB_USER_NAME"
-    - git config --global user.email "$GITLAB_USER_EMAIL"
-    - git checkout "$CI_COMMIT_REF_NAME"
-  script:
-    - npm ci
-    - npm run build
-    - |
-      if [ -n "$(git status --porcelain)" ]; then
-        git add .
-        git commit -m "[ci skip] updated by CI build"
-        git push -f origin HEAD:$CI_COMMIT_REF_NAME
-      else
-        echo "no change after build"
-      fi
-  artifacts:
-    paths:
-      - dist/**
 
 test-1:
   stage: test
