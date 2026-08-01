@@ -90,10 +90,6 @@ See the next section for details of each parameter in `with`.
 
 ### GitLab CI
 
-TBD
-
-<!-- 
-
 > [!CAUTION]
 > To secure your workflow, see [Pipeline security](https://docs.gitlab.com/ci/pipeline_security/) reference.
 
@@ -110,8 +106,8 @@ convert-csv:
   # Set parameters prefixed `INPUT_` with capital letters
   # as environment variables.
   variables:
-    INPUT_INPUT: localization.csv
-    INPUT_OUTPUT: localization_numbered.csv
+    INPUT_INPUT: foo/localization.csv
+    INPUT_OUTPUT: foo/localization_numbered.csv
     INPUT_COLUMNS: "2"
     INPUT_SOURCE: "1"
   before_script:
@@ -120,11 +116,8 @@ convert-csv:
   script:
     - mkdir -p temp
     - |
-      curl -L \
-      -H "Accept: application/vnd.github.raw" \
-      -H "Authorization: Bearer $GITHUB_TOKEN" \  
-      -H "X-GitHub-Api-Version: 2026-03-10" \
-      https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js?ref=main \
+      curl --header "PRIVATE-TOKEN: $ACCESS_TOKEN" \
+      --url "$CI_API_V4_URL/projects/h1data%2Fadd-csv-index/repository/files/dist%2Fgitlab%2Findex%2Ejs/raw?ref=v1" \
       -o temp/index.js
     - node temp/index.js
     - git add foo/localization_numbered.csv
@@ -135,13 +128,13 @@ convert-csv:
 See [inputs](#inputs) section of GitHub for parameters.
 
 > [!NOTE]
-> Even the script file is in public, you need personal access token to retrieve it via API.<br>
+> Even the script file is in public, you need a personal access token to retrieve it via API.<br>
 > see https://github.blog/changelog/2025-05-08-updated-rate-limits-for-unauthenticated-requests/
 
 > [!NOTE]
-> Preparing a CI Component is an option, but it's not flexible.<br>
-> i.e. cannot define job order by `needs`, `steps` like GitHub Actions<br>
-> Thus it recommends to define a whole workflow like above.<br> -->
+> Preparing a GitLab CI Component was an option, but it's only a template and not as flexible as GitHub Actions.<br>
+> ex. you still need to retrieve js file to run, cannot define job order by `needs`, cannot run component job with user-defined scripts in a single container like `steps` of GitHub Actions, etc.<br>
+> Thus it recommends to define a whole job like above.<br>
 
 ### CLI
 
