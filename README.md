@@ -69,19 +69,20 @@ See the next section for details of each parameter in `with`.
 #### Inputs
 - `input`: Input file path (required)<br>
   ex. `foo/localization.csv`<br>
-> [!NOTE]
-> You can use `*` as wildcard/placeholder for language code.
 - `output`: Output file path (required)<br>
   ex. `foo/localization_number.csv`
 - `columns`: Specifies the columns by number to add line numbers (starts with 0, separated by comma if multiple, required)<br>
   ex. `2`, or `2,3,4` if the file has columns for multiple languages
-- `header`: Whether the CSV has header (true/false, default: true)
+- `header`: Whether the CSV has header (true/false, default: `true`)
 - `encoding`: Specifies encoding (default: `utf8`)
 - `utf_bom`: Whether the CSV has BOM (default: false)
 - `linefeed`: Specifies linefeed by `CRLF` or `LF` (default: `CRLF`)
 - `separator`: Specifies the separator (default: `,`)
 - `escape`: Specifies escape character for separators (default: `\"`)
-- `quote-always`: Whether if always quote-always (true/false, default: false)
+- `quote-always`: Whether if always quote-always (true/false, default: `false`)
+
+> [!NOTE]
+> You can use `*` for a wildcard/placeholder as a language code in `input` and `output`. If you use `*` in either `input` or `output`, you have to use it in both parameters.
 
 #### Outputs
 - output: the path of the created CSV file
