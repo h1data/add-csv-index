@@ -1,3 +1,5 @@
+# CI Script for GitLab CI
+
 stages:
   - build
   - test
@@ -94,7 +96,7 @@ test-2:
     - |
       curl -L \
       -H "Accept: application/vnd.github.raw" \
-      -H "Authorization: Bearer $GITHUB_TOKEN" \
+      -H "Authorization: Bearer $GITHUB_TOKEN" \  
       -H "X-GitHub-Api-Version: 2026-03-10" \
       https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js \
       -o temp/index.js

@@ -1,4 +1,4 @@
-name: Append line numbers to CSV
+name: Add CSV Index
 description: add numbers to the certain columns in a CSV file
 author: h1data
 
