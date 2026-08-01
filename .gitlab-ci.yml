@@ -44,8 +44,6 @@ test-1:
           - src/**
           - test/**
           - .gitlab-ci.yml
-  artifacts:
-    paths: [ test/out*.csv ]
   variables:
     INPUT_INPUT: test/1_in*.csv
     INPUT_OUTPUT: test/1_out*.csv
