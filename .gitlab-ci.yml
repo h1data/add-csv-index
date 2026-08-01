@@ -74,10 +74,10 @@ test-2:
     INPUT_OUTPUT: test/2_out*.csv
     INPUT_COLUMNS: "2"
     INPUT_SOURCE: "1"
-    INPUT_HEADER: true
+    INPUT_HEADER: false
     INPUT_ENCODING: utf8
     INPUT_UTF_BOM: true
-    INPUT_LINEFEED: CRLF
+    INPUT_LINEFEED: LF
     INPUT_SEPARATOR: ","
     INPUT_QUOTE_ALWAYS: false
   before_script:
