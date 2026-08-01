@@ -1,7 +1,39 @@
 # CI Script for GitLab CI
 
 stages:
+  - build
   - test
+
+
+build:
+  stage: build
+  image: node:24-alpine
+  rules:
+    - changes:
+        paths:
+          - 'dist/**'
+          - 'src/**'
+          - templates/add-csv-index.yml
+          - .gitlab-ci.yml
+  before_script:
+    - apk add --no-cache git
+    - git config --global user.name "$GITLAB_USER_NAME"
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - git checkout "$CI_COMMIT_REF_NAME"
+  script:
+    - npm ci
+    - npm run build
+    - |
+      if [ -n "$(git status --porcelain)" ]; then
+        git add .
+        git commit -m "[ci skip] updated by CI build"
+        git push -f origin HEAD:$CI_COMMIT_REF_NAME
+      else
+        echo "no change after build"
+      fi
+  artifacts:
+    paths:
+      - dist/**
 
 test-1:
   stage: test
@@ -22,17 +54,10 @@ test-1:
     INPUT_COLUMNS: "2"
     INPUT_SOURCE: "1"
   before_script:
-    - apk add --no-cache curl diffutils
+    - apk add --no-cache diffutils
   script:
     - mkdir -p temp
-    - |
-      curl -L \
-      -H "Accept: application/vnd.github.raw" \
-      -H "Authorization: Bearer $GITHUB_TOKEN" \
-      -H "X-GitHub-Api-Version: 2026-03-10" \
-      https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js \
-      -o temp/index.js
-    - node temp/index.js
+    - node dist/gitlab/index.js
     - if [ ! -f test/1_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
     - diff -u test/1_output_expected.csv test/1_output.csv || (echo "CSV mismatch" && exit 1)
 
@@ -62,13 +87,6 @@ test-2:
     - apk add --no-cache curl diffutils
   script:
     - mkdir -p temp
-    - |
-      curl -L \
-      -H "Accept: application/vnd.github.raw" \
-      -H "Authorization: Bearer $GITHUB_TOKEN" \  
-      -H "X-GitHub-Api-Version: 2026-03-10" \
-      https://api.github.com/repos/h1data/add-csv-index/contents/dist/gitlab/index.js \
-      -o temp/index.js
-    - node temp/index.js
+    - node dist/gitlab/index.js
     - if [ ! -f test/2_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
     - diff -u test/2_output_expected.csv test/2_output.csv || (echo "CSV mismatch" && exit 1)
