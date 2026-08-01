@@ -5,14 +5,14 @@ name: CI
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - 'README.md'
-      - 'LICENSE'
-      - '.gitlab-ci.yml'
+    paths:
+      - '.github/workflows/**'
+      - 'dist/**'
+      - 'src/**'
+      - 'test/**'
   workflow_dispatch:
 
 jobs:
-
   test-1:
       runs-on: ubuntu-latest
       steps:
