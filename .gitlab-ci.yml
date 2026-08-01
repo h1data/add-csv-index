@@ -72,8 +72,8 @@ test-2:
   variables:
     INPUT_INPUT: test/2_in*.csv
     INPUT_OUTPUT: test/2_out*.csv
-    INPUT_COLUMNS: "2"
-    INPUT_SOURCE: "1"
+    INPUT_COLUMNS: "1,2"
+    INPUT_SOURCE: "0"
     INPUT_HEADER: false
     INPUT_ENCODING: utf8
     INPUT_UTF_BOM: true
