@@ -20,7 +20,8 @@ build:
     - git checkout "$CI_COMMIT_REF_NAME"
   script:
     - npm ci
-    - npm run build
+    - npm run build:github
+    - npm run build:gitlab
     - |
       if [ -n "$(git status --porcelain)" ]; then
         git add .
