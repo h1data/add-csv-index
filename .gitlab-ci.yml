@@ -4,7 +4,6 @@ stages:
   - build
   - test
 
-
 build:
   stage: build
   image: node:24-alpine
@@ -13,7 +12,6 @@ build:
         paths:
           - 'dist/**'
           - 'src/**'
-          - templates/add-csv-index.yml
           - .gitlab-ci.yml
   before_script:
     - apk add --no-cache git
@@ -44,7 +42,6 @@ test-1:
           - dist/**
           - src/**
           - test/**
-          - templates/add-csv-index.yml
           - .gitlab-ci.yml
   artifacts:
     paths: [ test/out*.csv ]
@@ -70,7 +67,6 @@ test-2:
           - dist/**
           - src/**
           - test/**
-          - templates/add-csv-index.yml
           - .gitlab-ci.yml
   variables:
     INPUT_INPUT: test/2_in*.csv
@@ -84,7 +80,7 @@ test-2:
     INPUT_SEPARATOR: ","
     INPUT_QUOTE_ALWAYS: false
   before_script:
-    - apk add --no-cache curl diffutils
+    - apk add --no-cache diffutils
   script:
     - mkdir -p temp
     - node dist/gitlab/index.js
