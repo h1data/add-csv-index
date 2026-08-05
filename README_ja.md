@@ -75,12 +75,13 @@ jobs:
   例) `foo/localization_number.csv`
 - `columns`: 行番号を付与する列を指定 (必須、0始まり、複数ある場合はカンマ区切りで指定)<br>
   例) `2`、または `2,3,4` (複数言語向けに複数の翻訳文列がある場合)
+- `source`: 指定された場合、対象の列が空白の時に指定された列の文字列で埋めます (0始まり)
 - `header`: ヘッダーの有無を指定 (`true` または `false`, 既定値: `true`)
 - `encoding`: 文字エンコードを指定 (既定値: `utf8`)
 - `utf_bom`: BOM有無を指定 (既定値: `false`)
 - `linefeed`: 改行コードを `CRLF` か `LF` で指定 (既定値: `CRLF`)
 - `separator`: 列区切り文字列を指定 (既定値: `,`)
-- `escape`: CSV列が列区切りを含む場合のエスケープ文字を指定 (既定値: `\"`)
+- `escape`: CSV列が列区切りを含む場合のエスケープ文字を指定 (既定値: `"`)
 - `quote-always`: 必ずエスケープ文字で囲うかどうかを指定 (`true` または `false`、既定値: `false`)
 
 > [!NOTE]
@@ -139,21 +140,24 @@ convert-csv:
 
 ### コマンドライン
 
-本スクリプトにはコマンドラインオプションはまだありませんが、以下の様に環境変数で設定を指定できます。
-(もちろん、Node.js環境が必要です)
-
 ``` sh
 # sh
-export INPUT_INPUT="foo.csv"
-export INPUT_OUTPUT="foo_numbered.csv"
-export INPUT_COLUMNS="2"
-export INPUT_SOURCE="1"
-node dist/gitlab/index.js
-export -n INPUT_INPUT
-export -n INPUT_OUTPUT
-export -n INPUT_COLUMNS
-export -n INPUT_SOURCE
+node dist/index.js --input foo/localization.csv --output foo/localization_numbered --columns 2 [options]
 ```
+
+#### Options
+- `--input`: 入力ファイルパス (必須)
+- `--output`: 出力ファイルパス (必須)
+- `--columns`: 行番号を付与する列を指定 (必須、0始まり、複数ある場合はカンマ区切りで指定)
+- `--source`: 対象の列が空白の時に埋める列番号を指定 (0始まり)
+- `--no-header`: CSVヘッダーなしとして変換
+- `--encoding`: 文字コード (既定値: `utf8`)
+- `--utf-bom`: BOMを出力
+- `--linefeed`: 改行コード (`CRLF` または `LF`, 既定値: `CRLF`)
+- `--separator`: 区切り文字 (既定値: `,`)
+- `--escape`: エスケープ文字 (既定値: `"`)
+- `--quote-always`: すべての列をクォーテーションで囲む
+- `--help`: 使用方法を出力
 
 ## 導入方法が分からない、もっとこんなことをしたい、という場合
 
