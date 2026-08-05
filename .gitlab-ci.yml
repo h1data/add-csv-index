@@ -115,5 +115,5 @@ test-cli-2:
     - apk add --no-cache diffutils
   script:
     - node dist/index.js --input test/2_input.csv --output test/2_output.csv --columns "1,2" --source 0 --no-header --encoding utf8 --utf-bom --linefeed LF --separator "," --quote-always
-    - if [ ! -f test/1_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
-    - diff -u test/1_output_expected.csv test/1_output.csv || (echo "CSV mismatch" && exit 1)
+    - if [ ! -f test/2_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
+    - diff -u test/2_output_expected.csv test/2_output.csv || (echo "CSV mismatch" && exit 1)
