@@ -34,7 +34,6 @@ const self : CIAdapter = {
             } else {
                 value = options[option.name] ? 'true' : 'false';
             }
-            console.log(option.name, options[option.name], option.defaultValue, value);
         } else {
             value = options[option.name];
         }
