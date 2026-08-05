@@ -75,6 +75,7 @@ See the next section for details of each parameter in `with`.
   ex. `foo/localization_number.csv`
 - `columns`: Specifies the columns by number to add line numbers (starts with 0, separated by comma if multiple, required)<br>
   ex. `2`, or `2,3,4` if the file has columns for multiple languages
+- `source`: If specified, fill with the text when the target columns are empty (starts with 0)
 - `header`: Whether the CSV has header or not (`true`/`false`, default: `true`)
 - `encoding`: Specifies encoding (default: `utf8`)
 - `utf_bom`: Whether the CSV has BOM or not (default: false)
@@ -140,21 +141,24 @@ See [inputs](#inputs) section of GitHub for parameters.
 
 ### CLI
 
-The script has no command line options yet, but you can use with environment variables as follows.
-(requires Node.js, of course)
-
 ``` sh
 # sh
-export INPUT_INPUT="foo.csv"
-export INPUT_OUTPUT="foo_numbered.csv"
-export INPUT_COLUMNS="2"
-export INPUT_SOURCE="1"
-node dist/gitlab/index.js
-export -n INPUT_INPUT
-export -n INPUT_OUTPUT
-export -n INPUT_COLUMNS
-export -n INPUT_SOURCE
+node dist/index.js --input foo/localization.csv --output foo/localization_numbered --columns 2 [options]
 ```
+
+#### Options
+- `--input`: Input file path (required)
+- `--output`: Output file path (required)
+- `--columns`: Index of columns to add line numbers (starts with 0, separated by comma if multiple, required)
+- `--source`: Fill with the specified column when the target columns are empty (starts with 0)
+- `--no-header`: Treat CSV as no header
+- `--encoding`: Character encoding (default: `utf8`)
+- `--utf-bom`: Append BOM
+- `--linefeed`: Linefeed (`CRLF` or `LF`, default: `CRLF`)
+- `--separator`: Separator (default: `,`)
+- `--escape`: Escape character for separators (default: `"`)
+- `--quote-always`: Quote every column
+- `--help`: Print the usage
 
 ## When you have difficulties setting up your workflow, or other demands
 
