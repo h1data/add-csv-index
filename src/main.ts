@@ -69,7 +69,7 @@ export async function run(adapter: Adapter): Promise<void> {
                         fields: headers.join(','),
                         crlf: options.LINEFEED == '\r\n',
                         quote: options.ESCAPE,
-                        quoteMode: options.IS_QUOTE
+                        quoteMode: options.IS_QUOTE ? 1 : 0
                     };
                     csvWriter(records, writerOptions, (error, csv) => {
                         if (error) throw error;
