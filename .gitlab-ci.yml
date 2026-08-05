@@ -52,7 +52,6 @@ test-1:
   before_script:
     - apk add --no-cache diffutils
   script:
-    - mkdir -p temp
     - node dist/gitlab/index.js
     - if [ ! -f test/1_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
     - diff -u test/1_output_expected.csv test/1_output.csv || (echo "CSV mismatch" && exit 1)
@@ -81,7 +80,40 @@ test-2:
   before_script:
     - apk add --no-cache diffutils
   script:
-    - mkdir -p temp
     - node dist/gitlab/index.js
     - if [ ! -f test/2_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
     - diff -u test/2_output_expected.csv test/2_output.csv || (echo "CSV mismatch" && exit 1)
+
+test-cli-1:
+  stage: test
+  image: node:24-alpine
+  rules:
+    - changes:
+        paths:
+          - dist/**
+          - src/**
+          - test/**
+          - .gitlab-ci.yml
+  before_script:
+    - apk add --no-cache diffutils
+  script:
+    - node dist/index.js --input test/1_in*.csv --output test/1_out*.csv --columns 2 --source 1
+    - if [ ! -f test/1_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
+    - diff -u test/1_output_expected.csv test/1_output.csv || (echo "CSV mismatch" && exit 1)
+
+test-cli-2:
+  stage: test
+  image: node:24-alpine
+  rules:
+    - changes:
+        paths:
+          - dist/**
+          - src/**
+          - test/**
+          - .gitlab-ci.yml
+  before_script:
+    - apk add --no-cache diffutils
+  script:
+    - node dist/index.js --input test/2_in*.csv --output test/2_out*.csv --columns "1,2" --source 0 --no-header --encoding utf8 --utf-bom --linefeed LF --separator "," --quote-always
+    - if [ ! -f test/1_output.csv ]; then echo "Produced CSV not found" && exit 2; fi
+    - diff -u test/1_output_expected.csv test/1_output.csv || (echo "CSV mismatch" && exit 1)
