@@ -1,19 +1,5 @@
 import Adapter from './ci/CIAdapter';
 
-export const optionDefinitions = {
-    INPUT: { name: 'input' },
-    OUTPUT: { name: 'output' },
-    COLUMNS: { name: 'columns' },
-    SOURCE: { name: 'source', type: Number, defaultValue: -1 },
-    HEADER: { name: 'no-header', type: Boolean, inverse: true},
-    ENCODING: { name: 'encoding', defaultValue: 'utf8' },
-    UTF_BOM: { name: 'utf-bom', type: Boolean }, 
-    LINEFEED: { name: 'linefeed', defaultValue: 'CRLF' },
-    SEPARATOR: { name: 'separator', defaultValue: ',' },
-    ESCAPE: { name: 'escape', defaultValue: '"'},
-    QUOTE_ALWAYS: { name: 'quote-always', type: Boolean }
-};
-
 export interface Options {
     INPUT: string,
     OUTPUT: string,
