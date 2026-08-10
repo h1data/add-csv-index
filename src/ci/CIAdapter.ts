@@ -1,5 +1,3 @@
-import * as option from '../option';
-
 export default interface CIAdapter {
 
     getInput(key: string, defaultValue?: string|undefined) : string,

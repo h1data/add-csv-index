@@ -27,7 +27,7 @@ export function getOptions(adapter: Adapter) : Options {
         SEPARATOR: adapter.getInput('SEPARATOR', ','),
         ESCAPE: adapter.getInput('ESCAPE', '"'),
         IS_QUOTE: adapter.getInput('QUOTE_ALWAYS', 'false') == 'true'
-    }
+    };
 }
 
 function getColumns(columns: string) : Array<number> {
