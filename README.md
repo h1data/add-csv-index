@@ -9,7 +9,7 @@ This is a script for workflows to append indexes as line numbers to specific col
 Among many standards, CSV is the most common format for translation of software/games.<br>
 Even if it has columns for key or context, it's often hard to assume where texts are used. There has been a technique to append line numbers to translated texts, however, there is a risk of contamination to modify the original file or texts in CAT.
 
-This workflow provides automated creation of CSV files with line numbers and is applied for GitHub Actions and GitLab CI.
+This workflow provides automated creation of CSV files with line numbers and is applied with GitHub Actions and GitLab CI.
 
 ## Example
 
@@ -39,7 +39,7 @@ MENU,Quit,Quit4,
 ### GitHub Actions
 
 > [!CAUTION]
-> For secure use of your workflow on GitHub, see the official documents such as [Security reference](https://docs.github.com/en/actions/reference/security).
+> For secure use of your workflow on GitHub, see the official documents, such as [Security reference](https://docs.github.com/en/actions/reference/security).
 
 Create a YAML file in `.github/workflows` as follows.
 
@@ -73,19 +73,19 @@ See the next section for details of each parameter in `with`.
   ex. `foo/localization.csv`<br>
 - `output`: Output file path (required)<br>
   ex. `foo/localization_number.csv`
-- `columns`: Specifies the columns by number to add line numbers (starts with 0, separated by comma if multiple, required)<br>
+- `columns`: Specifies the columns by number to add line numbers (starts with 0, separated by commas if multiple, required)<br>
   ex. `2`, or `2,3,4` if the file has columns for multiple languages
 - `source`: If specified, fill with the text when the target columns are empty (starts with 0)
-- `header`: Whether the CSV has header or not (`true`/`false`, default: `true`)
+- `header`: Whether the CSV has a header line or not (`true`/`false`, default: `true`)
 - `encoding`: Specifies encoding (default: `utf8`)
 - `utf_bom`: Whether the CSV has BOM or not (default: false)
 - `linefeed`: Specifies linefeed by `CRLF` or `LF` (default: `CRLF`)
 - `separator`: Specifies the separator (default: `,`)
-- `escape`: Specifies escape character for separators (default: `\"`)
+- `escape`: Specifies the escape character for separators (default: `\"`)
 - `quote-always`: Whether if each column is always quoted (`true`/`false`, default: `false`)
 
 > [!NOTE]
-> You can use `*` for a wildcard/placeholder as a language code in `input` and `output`. If you use `*` in either `input` or `output`, you have to use it in both parameters.
+> You can use `*` as a wildcard/placeholder for a language code in `input` and `output`. If you use `*` in either `input` or `output`, you have to use it in both parameters.
 
 #### Outputs
 - output: the path of the created CSV file
@@ -127,17 +127,17 @@ convert-csv:
     - git push origin HEAD
 ```
 
-Set parameters prefixed `INPUT_` with capital letters as environment variables.<br>
-See [inputs](#inputs) section of GitHub for parameters.
+Set parameters prefixed `INPUT_` in capital letters as environment variables.<br>
+See [inputs](#inputs) parameters section for GitHub.
 
 > [!NOTE]
-> Even the script file is in public, you need a [personal access token](https://docs.gitlab.com/security/tokens/#personal-access-tokens) ($ACCESS_TOKEN in the example above) to retrieve it via API.<br>
+> Even if the script file is in public, you need a [personal access token](https://docs.gitlab.com/security/tokens/#personal-access-tokens) ($ACCESS_TOKEN in the example above) to retrieve it via API.<br>
 > see https://docs.gitlab.com/api/repository_files/
 
 > [!NOTE]
 > Preparing a GitLab CI Component was an option, but it's only a template and not as flexible as GitHub Actions.<br>
-> ex. you still need to retrieve js file to run, cannot define job order by `needs`, cannot run component job with user-defined scripts in a single container like `steps` of GitHub Actions, etc.<br>
-> Thus it recommends to define a whole job like above.
+> ex. you still need to retrieve js file to run, cannot define job order by `needs`, cannot run a component job with user-defined scripts in a single container like `steps` of GitHub Actions, etc.<br>
+> Thus, it recommends defining a whole job like above.
 
 ### CLI
 
@@ -149,6 +149,8 @@ node dist/index.js --input foo/localization.csv --output foo/localization_number
 #### Options
 - `--input`: Input file path (required)
 - `--output`: Output file path (required)
+> [!INFO]
+> When use apostrophes `*` for file paths, quote them like the example above.
 - `--columns`: Index of columns to add line numbers (starts with 0, separated by comma if multiple, required)
 - `--source`: Fill with the specified column when the target columns are empty (starts with 0)
 - `--no-header`: Treat CSV as no header
