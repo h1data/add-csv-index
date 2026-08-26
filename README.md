@@ -6,8 +6,8 @@
 
 This is a script for workflows to append indexes as line numbers to specific columns in CSV files.
 
-Among many standards, CSV is the most common format for translation of software/games.<br>
-Even if it has columns for key or context, it's often hard to assume where texts are used. There has been a technique to append line numbers to translated texts, however, there is a risk of contamination to modify the original file or texts in CAT.
+Among many standards, CSV is one of the most common formats for translating software/games.<br>
+Even if it has columns for keys or context, it's often hard to assume where texts are used. There has been a technique to append line numbers to translated texts, however, there is a risk of contamination to modify the original file or texts in CAT.
 
 This workflow provides automated creation of CSV files with line numbers and is applied with GitHub Actions and GitLab CI.
 
