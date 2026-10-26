@@ -133,8 +133,7 @@ See [inputs](#inputs) parameters section for GitHub.
 > [!NOTE]
 > Even if the script file is in public, you need a [personal access token](https://docs.gitlab.com/security/tokens/#personal-access-tokens) ($ACCESS_TOKEN in the example above) to retrieve it via API.<br>
 > see https://docs.gitlab.com/api/repository_files/
-
-> [!NOTE]
+> 
 > Preparing a GitLab CI Component was an option, but it's only a template and not as flexible as GitHub Actions.<br>
 > ex. you still need to retrieve js file to run, cannot define job order by `needs`, cannot run a component job with user-defined scripts in a single container like `steps` of GitHub Actions, etc.<br>
 > Thus, it recommends defining a whole job like above.
@@ -149,7 +148,7 @@ node dist/index.js --input foo/localization.csv --output foo/localization_number
 #### Options
 - `--input`: Input file path (required)
 - `--output`: Output file path (required)
-> [!INFO]
+> [!NOTE]
 > When use apostrophes `*` for file paths, quote them like the example above.
 - `--columns`: Index of columns to add line numbers (starts with 0, separated by comma if multiple, required)
 - `--source`: Fill with the specified column when the target columns are empty (starts with 0)
